@@ -9,6 +9,15 @@ import (
 // Option represents the optional function.
 type Option func(opts *Options)
 
+// loadOptions loads options from the given Option functions.
+func loadOptions(options ...Option) *Options {
+	opts := new(Options)
+	for _, option := range options {
+		option(opts)
+	}
+	return opts
+}
+
 // Options represents configuration options for the chorister package.
 type Options struct {
 	// Options from the ants package.
