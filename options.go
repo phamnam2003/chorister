@@ -24,6 +24,8 @@ type Options struct {
 	// It serves as the base configuration for goroutine pool management.
 	// Includes settings like logger, expiry duration, panic handler, non-blocking, etc.
 	ants.Options
+
+	state int32
 }
 
 // WithOptions accepts the whole Options config.
