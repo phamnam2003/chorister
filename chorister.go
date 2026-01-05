@@ -8,10 +8,10 @@ const (
 
 type Chorister struct {
 	// cpool is the underlying goroutine pool used for managing concurrent tasks.
-	cpool CPool
+	CPool
 
 	// options holds the configuration options for the Chorister.
-	options *Options
+	options *COptions
 }
 
 // NewChorister creates a new Chorister instance with the given pool size and options.
@@ -24,8 +24,8 @@ func NewChorister(poolSize int, opts ...Option) (*Chorister, error) {
 	}
 
 	c := &Chorister{
-		cpool:   pool,
-		options: cOpts,
+		CPool:   pool,
+		options: &cOpts.COptions,
 	}
 
 	return c, nil

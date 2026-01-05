@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/phamnam2003/ants/v2"
+	"github.com/phamnam2003/chorister/pkg/logs"
 )
 
 // Option represents the optional function.
@@ -18,6 +19,15 @@ func loadOptions(options ...Option) *Options {
 	return opts
 }
 
+// COptions represents chorister-specific configuration options.
+type COptions struct {
+	// EnableMetrics indicates whether to enable metrics collection.
+	EnableMetrics bool
+
+	// CLogger to create logs and zap logger used for bridge with log sdk OpenTelemetry.
+	CLogger logs.CLogger
+}
+
 // Options represents configuration options for the chorister package.
 type Options struct {
 	// Options from the ants package.
@@ -25,7 +35,8 @@ type Options struct {
 	// Includes settings like logger, expiry duration, panic handler, non-blocking, etc.
 	ants.Options
 
-	state int32
+	// COptions represents additional configuration options specific to the chorister package.
+	COptions
 }
 
 // WithOptions accepts the whole Options config.
@@ -70,8 +81,8 @@ func WithPanicHandler(panicHandler func(any)) Option {
 	}
 }
 
-// WithLogger sets up a customized logger.
-func WithLogger(logger ants.Logger) Option {
+// WithAntsLogger sets up a customized logger.
+func WithAntsLogger(logger ants.Logger) Option {
 	return func(opts *Options) {
 		opts.Logger = logger
 	}
@@ -81,5 +92,19 @@ func WithLogger(logger ants.Logger) Option {
 func WithDisablePurge(disable bool) Option {
 	return func(opts *Options) {
 		opts.DisablePurge = disable
+	}
+}
+
+// WithEnableMetrics indicates whether we turn on metrics.
+func WithEnableMetrics(enable bool) Option {
+	return func(opts *Options) {
+		opts.EnableMetrics = enable
+	}
+}
+
+// WithCLogger sets up a customized zap logger.
+func WithCLogger(cLogger logs.CLogger) Option {
+	return func(opts *Options) {
+		opts.CLogger = cLogger
 	}
 }
