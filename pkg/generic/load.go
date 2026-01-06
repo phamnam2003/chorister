@@ -1,11 +1,11 @@
 package generic
 
 // Option represents the optional function.
-type Option[O any] func(opts *O)
+type Option[Os any] func(opts *Os)
 
 // LoadGenericOptions loads options from the given Option functions.
-func LoadGenericOptions[O any](options ...Option[O]) *O {
-	opts := new(O)
+func LoadGenericOptions[Os any](options ...Option[Os]) *Os {
+	opts := new(Os)
 	for _, option := range options {
 		option(opts)
 	}
