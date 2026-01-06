@@ -11,24 +11,24 @@ import (
 
 func TestLoadGenericOptions(t *testing.T) {
 	opts := generic.LoadGenericOptions[chorister.Options]()
-	require.Nil(t, opts.Options.Logger)
-	require.Nil(t, opts.Options.PanicHandler)
-	require.Zero(t, opts.Options.ExpiryDuration)
-	require.Zero(t, opts.Options.MaxBlockingTasks)
-	require.False(t, opts.Options.PreAlloc)
-	require.False(t, opts.Options.Nonblocking)
-	require.False(t, opts.Options.DisablePurge)
+	require.Nil(t, opts.Logger)
+	require.Nil(t, opts.PanicHandler)
+	require.Zero(t, opts.ExpiryDuration)
+	require.Zero(t, opts.MaxBlockingTasks)
+	require.False(t, opts.PreAlloc)
+	require.False(t, opts.Nonblocking)
+	require.False(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
 	require.Nil(t, opts.CLogger.Logger)
 
 	opts = generic.LoadGenericOptions(chorister.WithPreAlloc(true), chorister.WithDisablePurge(true))
-	require.True(t, opts.Options.PreAlloc)
-	require.True(t, opts.Options.DisablePurge)
+	require.True(t, opts.PreAlloc)
+	require.True(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
 
-	LOG_DIR := "/var/log/chorister"
-	lOpts := generic.LoadGenericOptions(logs.WithEnableRotate(true), logs.WithLogDir(LOG_DIR))
+	logDir := "/var/log/chorister"
+	lOpts := generic.LoadGenericOptions(logs.WithEnableRotate(true), logs.WithLogPath(logDir))
 	require.True(t, lOpts.EnableRotate)
-	require.Equal(t, LOG_DIR, lOpts.LogDir)
+	require.Equal(t, logDir, lOpts.LogPath)
 	require.Empty(t, lOpts.Prefix)
 }
