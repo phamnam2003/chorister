@@ -4,20 +4,9 @@ import (
 	"time"
 
 	"github.com/phamnam2003/ants/v2"
+	"github.com/phamnam2003/chorister/pkg/generic"
 	"github.com/phamnam2003/chorister/pkg/logs"
 )
-
-// Option represents the optional function.
-type Option func(opts *Options)
-
-// loadOptions loads options from the given Option functions.
-func loadOptions(options ...Option) *Options {
-	opts := new(Options)
-	for _, option := range options {
-		option(opts)
-	}
-	return opts
-}
 
 // COptions represents chorister-specific configuration options.
 type COptions struct {
@@ -40,70 +29,70 @@ type Options struct {
 }
 
 // WithOptions accepts the whole Options config.
-func WithOptions(options Options) Option {
+func WithOptions(options Options) generic.Option[Options] {
 	return func(opts *Options) {
 		*opts = options
 	}
 }
 
 // WithExpiryDuration sets up the interval time of cleaning up goroutines.
-func WithExpiryDuration(expiryDuration time.Duration) Option {
+func WithExpiryDuration(expiryDuration time.Duration) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.ExpiryDuration = expiryDuration
 	}
 }
 
 // WithPreAlloc indicates whether it should malloc for workers.
-func WithPreAlloc(preAlloc bool) Option {
+func WithPreAlloc(preAlloc bool) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.PreAlloc = preAlloc
 	}
 }
 
 // WithMaxBlockingTasks sets up the maximum number of goroutines that are blocked when it reaches the capacity of pool.
-func WithMaxBlockingTasks(maxBlockingTasks int) Option {
+func WithMaxBlockingTasks(maxBlockingTasks int) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.MaxBlockingTasks = maxBlockingTasks
 	}
 }
 
 // WithNonblocking indicates that pool will return nil when there is no available workers.
-func WithNonblocking(nonblocking bool) Option {
+func WithNonblocking(nonblocking bool) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.Nonblocking = nonblocking
 	}
 }
 
 // WithPanicHandler sets up panic handler.
-func WithPanicHandler(panicHandler func(any)) Option {
+func WithPanicHandler(panicHandler func(any)) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.PanicHandler = panicHandler
 	}
 }
 
 // WithAntsLogger sets up a customized logger.
-func WithAntsLogger(logger ants.Logger) Option {
+func WithAntsLogger(logger ants.Logger) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.Logger = logger
 	}
 }
 
 // WithDisablePurge indicates whether we turn off automatically purge.
-func WithDisablePurge(disable bool) Option {
+func WithDisablePurge(disable bool) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.DisablePurge = disable
 	}
 }
 
 // WithEnableMetrics indicates whether we turn on metrics.
-func WithEnableMetrics(enable bool) Option {
+func WithEnableMetrics(enable bool) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.EnableMetrics = enable
 	}
 }
 
 // WithCLogger sets up a customized zap logger.
-func WithCLogger(cLogger logs.CLogger) Option {
+func WithCLogger(cLogger logs.CLogger) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.CLogger = cLogger
 	}

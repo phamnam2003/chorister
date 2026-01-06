@@ -1,6 +1,9 @@
 package chorister
 
-import "github.com/phamnam2003/ants/v2"
+import (
+	"github.com/phamnam2003/ants/v2"
+	"github.com/phamnam2003/chorister/pkg/generic"
+)
 
 const (
 	ErrUnimplemented = "unimplemented method"
@@ -15,8 +18,8 @@ type Chorister struct {
 }
 
 // NewChorister creates a new Chorister instance with the given pool size and options.
-func NewChorister(poolSize int, opts ...Option) (*Chorister, error) {
-	cOpts := loadOptions(opts...)
+func NewChorister(poolSize int, opts ...generic.Option[Options]) (*Chorister, error) {
+	cOpts := generic.LoadGenericOptions(opts...)
 
 	pool, err := ants.NewPool(poolSize, ants.WithOptions(cOpts.Options))
 	if err != nil {
