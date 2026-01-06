@@ -11,9 +11,9 @@ type LOptions struct {
 	// that make logger can be write log file daily, monthly, ...
 	EnableRotate bool
 
-	// LogDir is the directory where logs will be stored.
+	// LogPath is the path log where logs will be stored.
 	// if rotate is false, logs will be printed to standard output.
-	LogDir string
+	LogPath string
 
 	// Prefix is the prefix string added to each log entry.
 	// It helps in identifying logs from different sources or modules.
@@ -27,12 +27,12 @@ func WithEnableRotate(enable bool) generic.Option[LOptions] {
 	}
 }
 
-// WithLogPath sets the LogPath option for LOptions.
+// WithLogPath sets the LogDir option for LOptions.
 // It joins the provided logPath with the system's file path separator.
 // This func makes sure the log path avoid traversal attack.
-func WithLogDir(logDir string) generic.Option[LOptions] {
+func WithLogPath(logPath string) generic.Option[LOptions] {
 	return func(opts *LOptions) {
-		opts.LogDir = logDir
+		opts.LogPath = logPath
 	}
 }
 

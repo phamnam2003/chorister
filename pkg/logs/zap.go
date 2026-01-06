@@ -19,20 +19,13 @@ type CLogger struct {
 	lock    sync.Locker
 }
 
-func (logger *CLogger) rotate() {
-
-}
-
-func newCLogger(opts ...generic.Option[LOptions]) *CLogger {
+func newCLogger(logger *zap.Logger, opts ...generic.Option[LOptions]) *CLogger {
 	lOpts := generic.LoadGenericOptions(opts...)
 
 	clog := &CLogger{
+		Logger:  logger,
 		options: lOpts,
 		lock:    syncx.NewSpinLock(),
-	}
-
-	if lOpts.EnableRotate {
-		go clog.rotate()
 	}
 
 	return clog
