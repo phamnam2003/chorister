@@ -1,7 +1,6 @@
 package chorister
 
 import (
-	"github.com/phamnam2003/ants/v2"
 	"github.com/phamnam2003/chorister/pkg/generic"
 )
 
@@ -18,17 +17,12 @@ type Chorister struct {
 }
 
 // NewChorister creates a new Chorister instance with the given pool size and options.
-func NewChorister(poolSize int, opts ...generic.Option[Options]) (*Chorister, error) {
-	cOpts := generic.LoadGenericOptions(opts...)
-
-	pool, err := ants.NewPool(poolSize, ants.WithOptions(cOpts.Options))
-	if err != nil {
-		return nil, err
-	}
+func NewChorister(pool CPool, opts ...generic.Option[COptions]) (*Chorister, error) {
+	options := generic.LoadGenericOptions(opts...)
 
 	c := &Chorister{
 		CPool:   pool,
-		options: &cOpts.COptions,
+		options: options,
 	}
 
 	return c, nil

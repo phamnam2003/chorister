@@ -47,7 +47,7 @@ func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	logger := zap.New(zapcore.NewTee(cores...), lOpts.ZapOpts...)
 
 	if lOpts.Prefix != "" {
-		logger = logger.WithOptions(zap.Fields(zap.String("prefix", lOpts.Prefix)))
+		logger = logger.With(zap.Field{Key: "prefix", Type: zapcore.StringType, String: lOpts.Prefix})
 	}
 
 	clog := &CLogger{
