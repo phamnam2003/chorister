@@ -7,6 +7,7 @@ import (
 	"github.com/phamnam2003/chorister/pkg/generic"
 	"github.com/phamnam2003/chorister/pkg/logs"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestLoadGenericOptions(t *testing.T) {
@@ -26,8 +27,8 @@ func TestLoadGenericOptions(t *testing.T) {
 	require.True(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
 
-	lOpts := generic.LoadGenericOptions(logs.WithEnableRotate(true), logs.WithEnableSampling(true))
-	require.True(t, lOpts.EnableRotate)
+	lOpts := generic.LoadGenericOptions(logs.WithEnableSampling(true), logs.WithZapOptions(zap.AddCaller()))
 	require.Empty(t, lOpts.Prefix)
 	require.True(t, lOpts.EnableSampling)
+	require.Len(t, lOpts.ZapOpts, 1)
 }

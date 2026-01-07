@@ -2,7 +2,6 @@
 package chorister
 
 import (
-	"errors"
 	"time"
 )
 
@@ -67,12 +66,12 @@ func (u *UnimplementCPool) Release() {}
 
 // ReleaseTimeout is a placeholder method for unimplemented CPool.ReleaseTimeout.
 func (u *UnimplementCPool) ReleaseTimeout(timeout time.Duration) error {
-	return errors.New(ErrUnimplemented)
+	return ErrUnimplemented
 }
 
 // Submit is a placeholder method for unimplemented CPool.Submit.
 func (u *UnimplementCPool) Submit(task func()) error {
-	return errors.New(ErrUnimplemented)
+	return ErrUnimplemented
 }
 
 // Reboot is a placeholder method for unimplemented CPool.Reboot.
@@ -104,5 +103,5 @@ type CPoolWithFunc[T any] interface {
 
 // Invoke is a placeholder method for unimplemented CPoolWithFunc.Invoke.
 func (u *UnimplementCPoolWithFunc[T]) Invoke(arg T) error {
-	return errors.New(ErrUnimplemented)
+	return ErrUnimplemented
 }

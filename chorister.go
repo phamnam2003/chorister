@@ -1,11 +1,14 @@
 package chorister
 
 import (
+	"errors"
+
 	"github.com/phamnam2003/chorister/pkg/generic"
 )
 
-const (
-	ErrUnimplemented = "unimplemented method"
+var (
+	ErrUnimplemented   = errors.New("unimplemented method")
+	ErrNoConfigurePool = errors.New("no configure")
 )
 
 type Chorister struct {
@@ -13,15 +16,14 @@ type Chorister struct {
 	CPool
 
 	// options holds the configuration options for the Chorister.
-	options *COptions
+	options *Options
 }
 
 // NewChorister creates a new Chorister instance with the given pool size and options.
-func NewChorister(pool CPool, opts ...generic.Option[COptions]) (*Chorister, error) {
+func NewChorister(opts ...generic.Option[Options]) (*Chorister, error) {
 	options := generic.LoadGenericOptions(opts...)
 
 	c := &Chorister{
-		CPool:   pool,
 		options: options,
 	}
 

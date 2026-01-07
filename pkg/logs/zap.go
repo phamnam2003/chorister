@@ -28,7 +28,7 @@ type CLogger struct {
 func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	lOpts := generic.LoadGenericOptions(opts...)
 
-	if lOpts.EnableRotate && len(lOpts.RotateWriter) == 0 {
+	if len(lOpts.RotateWriter) == 0 {
 		return nil, ErrInvalidIOWriters
 	}
 

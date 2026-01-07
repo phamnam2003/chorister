@@ -1,7 +1,5 @@
 package chorister
 
-import "errors"
-
 // CMultiPool defines the interface for a multi-worker pool.
 // Multi-worker pool based from github.com/phamnam2003/ants
 type CMultiPool interface {
@@ -24,17 +22,17 @@ type UnimplementCMultiPool struct {
 
 // FreeByIndex is a placeholder method for unimplemented CMultiPool.FreeByIndex.
 func (u *UnimplementCMultiPool) FreeByIndex(idx int) (int, error) {
-	return 0, errors.New(ErrUnimplemented)
+	return 0, ErrUnimplemented
 }
 
 // RunningByIndex is a placeholder method for unimplemented CMultiPool.RunningByIndex.
 func (u *UnimplementCMultiPool) RunningByIndex(idx int) (int, error) {
-	return 0, errors.New(ErrUnimplemented)
+	return 0, ErrUnimplemented
 }
 
 // WaitingByIndex is a placeholder method for unimplemented CMultiPool.WaitingByIndex.
 func (u *UnimplementCMultiPool) WaitingByIndex(idx int) (int, error) {
-	return 0, errors.New(ErrUnimplemented)
+	return 0, ErrUnimplemented
 }
 
 // CMultiPoolWithFunc defines the interface for a generic multi-worker pool that accepts tasks with arguments.
@@ -50,5 +48,5 @@ type UnimplementCMultiPoolWithFunc[T any] struct {
 
 // Invoke is a placeholder method for unimplemented CMultiPoolWithFunc.Invoke.
 func (u *UnimplementCMultiPoolWithFunc[T]) Invoke(arg T) error {
-	return errors.New(ErrUnimplemented)
+	return ErrUnimplemented
 }

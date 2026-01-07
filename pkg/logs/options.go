@@ -11,10 +11,6 @@ import (
 // LOptions holds configuration options for the logger.
 // It can be extended in the future to include various logging settings.
 type LOptions struct {
-	// EnableRotate indicates whether log rotation is enabled.
-	// This helps in managing log file sizes and archiving old logs.
-	EnableRotate bool
-
 	// RotateWriter is a list of io.Writer where rotated logs will be written.
 	// This allows flexibility in directing rotated logs to different destinations.
 	RotateWriter []io.Writer
@@ -34,13 +30,6 @@ type LOptions struct {
 	// EnableSampling indicates whether log sampling is enabled.
 	// When enabled, it reduces the volume of logs by sampling similar log entries when your application is under high load.
 	EnableSampling bool
-}
-
-// WithEnableRotate sets the EnableRotate option for LOptions.
-func WithEnableRotate(enable bool) generic.Option[LOptions] {
-	return func(opts *LOptions) {
-		opts.EnableRotate = enable
-	}
 }
 
 // WithPrefix sets the Prefix option for LOptions.
