@@ -2,11 +2,17 @@
 package logs
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/phamnam2003/ants/v2/pkg/syncx"
 	"github.com/phamnam2003/chorister/pkg/generic"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var (
+	ErrInvalidIOWriters = errors.New("io writers is empty")
 )
 
 // CLogger is an alias for zap.Logger
@@ -19,8 +25,30 @@ type CLogger struct {
 	lock    sync.Locker
 }
 
-func newCLogger(logger *zap.Logger, opts ...generic.Option[LOptions]) *CLogger {
+func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	lOpts := generic.LoadGenericOptions(opts...)
+
+	if lOpts.EnableRotate && len(lOpts.RotateWriter) == 0 {
+		return nil, ErrInvalidIOWriters
+	}
+
+	if lOpts.Encoder == nil {
+		lOpts.Encoder = zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig())
+	}
+
+	cores := make([]zapcore.Core, 0, len(lOpts.RotateWriter))
+	for _, w := range lOpts.RotateWriter {
+		cores = append(cores, zapcore.NewCore(
+			lOpts.Encoder,
+			zapcore.AddSync(w),
+			zapcore.InfoLevel,
+		))
+	}
+	logger := zap.New(zapcore.NewTee(cores...), lOpts.ZapOpts...)
+
+	if lOpts.Prefix != "" {
+		logger = logger.WithOptions(zap.Fields(zap.String("prefix", lOpts.Prefix)))
+	}
 
 	clog := &CLogger{
 		Logger:  logger,
@@ -28,5 +56,5 @@ func newCLogger(logger *zap.Logger, opts ...generic.Option[LOptions]) *CLogger {
 		lock:    syncx.NewSpinLock(),
 	}
 
-	return clog
+	return clog, nil
 }

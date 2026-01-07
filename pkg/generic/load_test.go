@@ -26,9 +26,8 @@ func TestLoadGenericOptions(t *testing.T) {
 	require.True(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
 
-	logDir := "/var/log/chorister"
-	lOpts := generic.LoadGenericOptions(logs.WithEnableRotate(true), logs.WithLogPath(logDir))
+	lOpts := generic.LoadGenericOptions(logs.WithEnableRotate(true), logs.WithEnableSampling(true))
 	require.True(t, lOpts.EnableRotate)
-	require.Equal(t, logDir, lOpts.LogPath)
 	require.Empty(t, lOpts.Prefix)
+	require.True(t, lOpts.EnableSampling)
 }
