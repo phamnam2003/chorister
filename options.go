@@ -14,7 +14,7 @@ type COptions struct {
 	EnableMetrics bool
 
 	// CLogger to create logs and zap logger used for bridge with log sdk OpenTelemetry.
-	CLogger logs.CLogger
+	CLogger *logs.CLogger
 }
 
 // Options represents configuration options for the chorister package.
@@ -92,7 +92,7 @@ func WithEnableMetrics(enable bool) generic.Option[Options] {
 }
 
 // WithCLogger sets up a customized zap logger.
-func WithCLogger(cLogger logs.CLogger) generic.Option[Options] {
+func WithCLogger(cLogger *logs.CLogger) generic.Option[Options] {
 	return func(opts *Options) {
 		opts.CLogger = cLogger
 	}
