@@ -20,15 +20,14 @@ func TestLoadGenericOptions(t *testing.T) {
 	require.False(t, opts.Nonblocking)
 	require.False(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
-	require.Nil(t, opts.CLogger.Logger)
+	require.Nil(t, opts.CLogger)
 
 	opts = generic.LoadGenericOptions(chorister.WithPreAlloc(true), chorister.WithDisablePurge(true))
 	require.True(t, opts.PreAlloc)
 	require.True(t, opts.DisablePurge)
 	require.False(t, opts.EnableMetrics)
 
-	lOpts := generic.LoadGenericOptions(logs.WithEnableSampling(true), logs.WithZapOptions(zap.AddCaller()))
+	lOpts := generic.LoadGenericOptions(logs.WithZapOptions(zap.AddCaller()))
 	require.Empty(t, lOpts.Prefix)
-	require.True(t, lOpts.EnableSampling)
 	require.Len(t, lOpts.ZapOpts, 1)
 }
