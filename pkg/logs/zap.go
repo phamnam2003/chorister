@@ -3,9 +3,7 @@ package logs
 
 import (
 	"errors"
-	"sync"
 
-	"github.com/phamnam2003/ants/v2/pkg/syncx"
 	"github.com/phamnam2003/chorister/pkg/generic"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -22,7 +20,6 @@ type CLogger struct {
 	*zap.Logger
 
 	options *LOptions
-	lock    sync.Locker
 }
 
 func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
@@ -52,7 +49,6 @@ func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	clog := &CLogger{
 		Logger:  logger,
 		options: lOpts,
-		lock:    syncx.NewSpinLock(),
 	}
 
 	return clog, nil
