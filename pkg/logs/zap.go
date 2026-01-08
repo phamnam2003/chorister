@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	ErrInvalidIOWriters = errors.New("io writers is empty")
+	ErrInvalidIOWriters = errors.New("io writers is invalid")
 )
 
 // CLogger is an alias for zap.Logger
@@ -28,26 +28,25 @@ type CLogger struct {
 func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	lOpts := generic.LoadGenericOptions(opts...)
 
-	if len(lOpts.RotateWriter) == 0 {
+	if len(lOpts.Writers) == 0 {
 		return nil, ErrInvalidIOWriters
 	}
 
-	if lOpts.Encoder == nil {
-		lOpts.Encoder = zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig())
-	}
-
-	cores := make([]zapcore.Core, 0, len(lOpts.RotateWriter))
-	for _, w := range lOpts.RotateWriter {
+	cores := make([]zapcore.Core, 0, len(lOpts.Writers))
+	for _, w := range lOpts.Writers {
+		if !w.Valid() {
+			return nil, ErrInvalidIOWriters
+		}
 		cores = append(cores, zapcore.NewCore(
-			lOpts.Encoder,
-			zapcore.AddSync(w),
-			zapcore.InfoLevel,
+			w.Encoder,
+			zapcore.AddSync(w.Writer),
+			w.LevelEnabler,
 		))
 	}
 	logger := zap.New(zapcore.NewTee(cores...), lOpts.ZapOpts...)
 
-	if lOpts.Prefix != "" {
-		logger = logger.With(zap.Field{Key: "prefix", Type: zapcore.StringType, String: lOpts.Prefix})
+	if lOpts.Prefix.Key != "" && lOpts.Prefix.Value != "" {
+		logger = logger.With(zap.String(lOpts.Prefix.Key, lOpts.Prefix.Value))
 	}
 
 	clog := &CLogger{
