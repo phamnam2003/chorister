@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// PrefixLogger represents a key-value pair used as a prefix in log entries.
 type PrefixLogger struct {
 	Key, Value string
 }
@@ -34,12 +35,16 @@ func WithPrefix(prefix PrefixLogger) generic.Option[LOptions] {
 	}
 }
 
+// WithWriters sets the Writers option for LOptions.
+// It specifies the io.Writers to be used for logging.
 func WithWriters(writers ...*LogWriter) generic.Option[LOptions] {
 	return func(opts *LOptions) {
 		opts.Writers = writers
 	}
 }
 
+// WithZapOptions sets the ZapOpts option for LOptions.
+// It allows customization of the zap logger with additional options.
 func WithZapOptions(zapOpts ...zap.Option) generic.Option[LOptions] {
 	return func(opts *LOptions) {
 		opts.ZapOpts = zapOpts

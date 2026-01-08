@@ -22,6 +22,9 @@ type CLogger struct {
 	options *LOptions
 }
 
+// NewCLogger creates a new CLogger instance based on the provided LOptions.
+// It configures the logger with specified writers, encoders, and log levels.
+// It use zap logger under the hood.
 func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	lOpts := generic.LoadGenericOptions(opts...)
 
@@ -52,4 +55,14 @@ func NewCLogger(opts ...generic.Option[LOptions]) (*CLogger, error) {
 	}
 
 	return clog, nil
+}
+
+// Sync flushes any buffered log entries.
+// It is wrapper around zap.Sync method.
+func (cl *CLogger) Sync() error {
+	if cl.Logger != nil {
+		return cl.Logger.Sync()
+	}
+
+	return nil
 }

@@ -10,6 +10,8 @@ import (
 // a zapcore.Encoder and a zapcore.LevelEnabler to facilitate structured
 // logging with level-based filtering.
 type LogWriter struct {
+	zapcore.Core
+
 	// Writer is the underlying io.Writer where log entries will be written.
 	// This could be a file, JSON, console, network connection, etc.
 	Writer io.Writer
