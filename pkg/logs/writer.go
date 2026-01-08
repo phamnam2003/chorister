@@ -25,6 +25,6 @@ type LogWriter struct {
 
 // Valid checks if the LogWriter has all necessary components properly set.
 // It returns true if Writer, Encoder, and LevelEnabler are all non-nil.
-func (lw LogWriter) Valid() bool {
-	return lw.Writer != nil && lw.Encoder != nil && lw.LevelEnabler != nil
+func (lw *LogWriter) Valid() bool {
+	return lw != nil && lw.Writer != nil && lw.Encoder != nil && lw.LevelEnabler != nil
 }
